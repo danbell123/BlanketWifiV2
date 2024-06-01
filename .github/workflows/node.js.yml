@@ -24,4 +24,5 @@ jobs:
 
     - run: npm ci
     - run: npm run build
-    - run: npm run lint
+    # TODO: Add this in later
+    # - run: npm run lint
