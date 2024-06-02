@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import NavItem from './NavItem';
 import BottomNavItem from './BottomNavItem';
 import { menuItems } from './menuItems';
-import MobileNavbar from './MobileNavbar';
+import MobileNavbar from './MobileNavBar';
 
 const Navbar: React.FC = () => {
     const [isOpen, setIsOpen] = useState(true);
