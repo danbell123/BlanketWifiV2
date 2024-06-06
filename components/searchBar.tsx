@@ -1,6 +1,9 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
+//TODO: BUG: Focus state not working correctly. Need to fix this.
+
+import React, { useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import {
     Command,
     CommandDialog,
@@ -10,36 +13,57 @@ import {
     CommandItem,
     CommandList,
     CommandSeparator,
-    CommandShortcut,
-} from "@/components/ui/command";  
+} from "@/components/ui/command";
+import { Search } from 'lucide-react';
 
-export const SearchBar: React.FC = () => {
-    const [open, setOpen] = useState<boolean>(false);
-  
-    useEffect(() => {
-      const down = (e: KeyboardEvent) => {
-        if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
-          e.preventDefault();
-          setOpen((open) => !open);
-        }
-      };
-      document.addEventListener("keydown", down);
-      return () => {
-        document.removeEventListener("keydown", down);
-      };
-    }, []);
-  
+const SearchBar = () => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    const toggleCommandList = () => {
+        setIsOpen(!isOpen);
+    };
+
+    // Animation variants for the command list that scale only in the y direction
+    const variants = {
+        hidden: { scaleY: 0, opacity: 0 },
+        visible: { scaleY: 1, opacity: 1 }
+    };
+
     return (
-      <CommandDialog open={open} onOpenChange={setOpen}>
-        <CommandInput placeholder="Type a command or search..." />
-        <CommandList>
-          <CommandEmpty>No results found.</CommandEmpty>
-          <CommandGroup heading="Suggestions">
-            <CommandItem>Calendar</CommandItem>
-            <CommandItem>Search Emoji</CommandItem>
-            <CommandItem>Calculator</CommandItem>
-          </CommandGroup>
-        </CommandList>
-      </CommandDialog>
+        <div className={`bg-background ${isOpen ? 'w-full' : 'w-2/3'} flex justify-between items-center relative transition-all`}>
+            <Command>
+                <CommandInput placeholder="Type a command or search..." onClick={toggleCommandList} />
+                <AnimatePresence>
+                    {isOpen && (
+                        <motion.div
+                            initial="hidden"
+                            animate="visible"
+                            exit="hidden"
+                            variants={variants}
+                            transition={{ duration: 0.3, ease: "easeInOut" }}
+                            style={{ originY: 0, position: 'absolute', top: '100%', left: 0, right: 0, zIndex: 10 }}
+                            className='bg-card border border-foreground/10 rounded-md shadow-md overflow-hidden mt-2'
+                        >
+                            <CommandList>
+                                <CommandEmpty>No results found.</CommandEmpty>
+                                <CommandGroup heading="Suggestions">
+                                    <CommandItem>Calendar</CommandItem>
+                                    <CommandItem>Search Emoji</CommandItem>
+                                    <CommandItem>Calculator</CommandItem>
+                                </CommandGroup>
+                                <CommandSeparator />
+                                <CommandGroup heading="Settings">
+                                    <CommandItem>Profile</CommandItem>
+                                    <CommandItem>Billing</CommandItem>
+                                    <CommandItem>Settings</CommandItem>
+                                </CommandGroup>
+                            </CommandList>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </Command>
+        </div>
     );
 };
+
+export default SearchBar;

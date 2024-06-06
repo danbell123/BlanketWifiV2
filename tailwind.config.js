@@ -63,6 +63,16 @@ const config = {
         "2xs": "0.625rem",
         "3xs": "0.5rem",
       },
+      spacing: {
+        'shrink-content': 'calc(100% - 250px)',  // Adjust width when navbar is expanded (250px wide)
+        'expand-content': 'calc(100% - 72px)',   // Adjust width when navbar is collapsed (72px wide)
+      },
+      transitionProperty: {
+        'width': 'width'  // To enable smooth width transitions for navbar
+      },
+      transitionDuration: {
+        '300': '300ms' 
+      }
     },
   },
   plugins: [require("tailwindcss-animate")],

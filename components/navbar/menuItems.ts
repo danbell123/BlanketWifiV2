@@ -1,4 +1,3 @@
-// models/menuItems.ts
 export const menuItems = [
     { name: 'Dashboard', href: '#dashboard', icon: 'dashboard', id: 0 },
     { name: 'Customers', href: '#customers', icon: 'people', id: 1 },

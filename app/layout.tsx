@@ -1,31 +1,28 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
 import { GeistSans } from "geist/font/sans";
-import "./globals.css";
+import TopNav from '@/components/topnavbar/TopNavBar';
 
-const Navbar = dynamic(() => import('../components/navbar/Navbar'), { ssr: false });  // Import Navbar without server-side rendering
-
-const defaultUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "http://localhost:3000";
-
-export const metadata = {
-  metadataBase: new URL(defaultUrl),
-  title: "Blanket Wifi",
-  description: "The fastest way to build apps with Next.js and Supabase",
-};
+const Navbar = dynamic(() => import('../components/navbar/Navbar'), { ssr: false });
 
 interface RootLayoutProps {
   children: React.ReactNode;
 }
 
 const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
+  const [isExpanded, setIsExpanded] = useState(false); // State to track Navbar expansion
+
   return (
     <html lang="en" className={GeistSans.className}>
-      <body className="bg-background text-foreground">
-        <Navbar />
-        <main className="min-h-screen flex flex-col items-center">
-          {children}
+      <body className="flex flex-row justify-end min-h-screen bg-background text-foreground">
+        <Navbar isExpanded={isExpanded} onToggle={() => setIsExpanded(!isExpanded)} />
+        <main style={{ width: isExpanded ? 'calc(100% - 250px)' : 'calc(100% - 72px)' }} className={`transition-width justify-end duration-300`}>
+          <TopNav />
+          <div className="p-6">
+            {children}
+          </div>
         </main>
       </body>
     </html>
