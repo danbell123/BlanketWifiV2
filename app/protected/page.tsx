@@ -10,7 +10,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { SearchBar } from "@/components/searchBar";
 import ThemeToggle from '../../components/ThemeToggle'; // Adjust the path as necessary
 
 export default async function ProtectedPage() {
@@ -73,11 +72,6 @@ export default async function ProtectedPage() {
                     </TableRow>
                   </TableBody>
                 </Table>
-                <SearchBar />
-
-
-
-
               </div>
             </div>
           </div>

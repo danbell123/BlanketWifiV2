@@ -14,7 +14,6 @@ import {
     CommandList,
     CommandSeparator,
 } from "@/components/ui/command";
-import { Search } from 'lucide-react';
 
 const SearchBar = () => {
     const [isOpen, setIsOpen] = useState(false);
