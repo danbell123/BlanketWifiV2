@@ -72,7 +72,10 @@ const config = {
       },
       transitionDuration: {
         '300': '300ms' 
-      }
+      },
+      borderColor: theme => ({
+        DEFAULT: theme('colors.border', 'current'), // Set default border color
+      }),
     },
   },
   plugins: [require("tailwindcss-animate")],
