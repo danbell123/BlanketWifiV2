@@ -1,12 +1,10 @@
 export type Customer = {
-    customerID: string;
-    firstname: string;
-    lastname: string;
-    email: string;
-    tel: string;
-    profilePicture: string;
-    dob: Date;
-    gender: 'male' | 'female' | 'other' | 'prefer not to say';
-    createdAt: Date;
-  };
-  
+  wifi_user_id: string;  // Changed to match the database column name
+  firstname: string;
+  lastname: string;
+  email: string;
+  tel: string;
+  dob: Date;          // Assuming Date parsing is handled appropriately
+  gender: string;
+  profilePictureURL: string; // Changed to match the database column name
+};
