@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import SearchBar from '../SearchBar';
+import SearchBar from '@/components/SearchBar';
 import ProfileDropdown from './profileDropdown';
 
 const TopNav = () => {
