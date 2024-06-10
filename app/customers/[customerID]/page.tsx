@@ -67,7 +67,7 @@ function CustomerProfile() {
             <p><strong>Gender:</strong> {customer?.gender}</p>
             <p><strong>Profile Picture URL:</strong> {customer?.profilePictureURL && <a href={customer.profilePictureURL} target="_blank" rel="noopener noreferrer">View Profile Picture</a>}</p>
             <div>
-                <CustomerTimeline customerId={customerID} />
+                {customerID && <CustomerTimeline customerId={customerID} />}
             </div>
         </div>
     );
