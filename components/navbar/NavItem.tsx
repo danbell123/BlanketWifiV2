@@ -2,6 +2,8 @@
 
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation'; // Updated to usePathname
 
 interface NavItemProps {
     item: {
@@ -18,6 +20,7 @@ interface NavItemProps {
 
 const NavItem: React.FC<NavItemProps> = ({ item, selected, setSelected, isOpen }) => {
     const [isHovered, setIsHovered] = useState(false);
+    const pathname = usePathname(); // Updated to usePathname
 
     const textVariants = {
         open: { 
@@ -37,29 +40,33 @@ const NavItem: React.FC<NavItemProps> = ({ item, selected, setSelected, isOpen }
     const handleMouseEnter = () => setIsHovered(true);
     const handleMouseLeave = () => setIsHovered(false);
 
+    const isActive = pathname === item.href;
+
     return (
-        <motion.button
-            className="p-2 bg-background rounded-md transition-all flex items-center justify-start relative overflow-hidden"
-            style={{
-                width: isOpen ? '100%' : '40px',
-                height: isOpen ? 'auto' : '40px',
-                backgroundColor: isHovered ? 'hsl(var(--secondary))' : 'transparent',  // Adjust the background color on hover
-            }}
-            onClick={() => setSelected(item.id)}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-            whileTap={{ scale: 0.95 }}
-        >
-            <span className="material-icons z-10">{item.icon}</span>
-            <motion.span
-                className="flex-1 text-base text-foreground ml-2 text-left whitespace-nowrap z-10"
-                variants={textVariants}
-                initial="closed"
-                animate={isOpen ? "open" : "closed"}
+        <Link href={item.href} legacyBehavior>
+            <motion.button
+                className={`p-2 rounded-md transition-all flex items-center justify-start relative overflow-hidden ${isActive ? 'bg-secondary text-secondary-foreground' : 'bg-background text-foreground'}`}
+                style={{
+                    width: isOpen ? '100%' : '40px',
+                    height: isOpen ? 'auto' : '40px',
+                    backgroundColor: isHovered && !isActive ? 'hsl(var(--secondary))' : '',
+                }}
+                onClick={() => setSelected(item.id)}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                whileTap={{ scale: 0.95 }}
             >
-                {item.name}
-            </motion.span>
-        </motion.button>
+                <span className="material-icons z-10">{item.icon}</span>
+                <motion.span
+                    className="flex-1 text-base ml-2 text-left whitespace-nowrap z-10"
+                    variants={textVariants}
+                    initial="closed"
+                    animate={isOpen ? "open" : "closed"}
+                >
+                    {item.name}
+                </motion.span>
+            </motion.button>
+        </Link>
     );
 };
 

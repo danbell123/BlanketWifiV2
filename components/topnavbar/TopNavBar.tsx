@@ -1,4 +1,4 @@
-import SearchBar from '@/components/SearchBar';
+import SearchBar from '../SearchBar';
 import ProfileDropdown from './profileDropdown';
 
 const TopNav = () => {

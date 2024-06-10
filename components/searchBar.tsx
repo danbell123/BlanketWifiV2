@@ -45,11 +45,12 @@ const SearchBar = () => {
                         >
                             <CommandList>
                                 <CommandEmpty>No results found.</CommandEmpty>
-                                <CommandGroup heading="Suggestions">
-                                    <CommandItem>Calendar</CommandItem>
-                                    <CommandItem>Search Emoji</CommandItem>
-                                    <CommandItem>Calculator</CommandItem>
+                                <CommandGroup heading="Actions">
+                                    <CommandItem><span className='material-icons pr-2'>add</span>New Segment</CommandItem>
+                                    <CommandItem><span className='material-icons pr-2'>send</span>Send Pulse</CommandItem>
+                                    <CommandItem><span className='material-icons pr-2'>router</span>Edit Portal</CommandItem>
                                 </CommandGroup>
+                                <CommandSeparator />
                                 <CommandSeparator />
                                 <CommandGroup heading="Settings">
                                     <CommandItem>Profile</CommandItem>

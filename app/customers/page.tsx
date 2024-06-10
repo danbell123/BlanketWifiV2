@@ -1,41 +1,55 @@
+'use client';
+
+import React, { useEffect, useState } from 'react';
 import '../globals.css';  
-import { columns } from './columns';  
-import { DataTable } from './data-table';  
+import { columns } from './customer-columns';  
+import { DataTable } from '@/components/DataTable';  
 import { Customer } from '@/types/index';  
-import { createClient } from '../../utils/supabase/server';
+import { fetchCustomers } from '@/services/userService';
+import { PageHeader } from '@/components/PageHeader';
 
-export default async function Index() {
-    // Initialize Supabase client
-    const supabase = createClient();
+function Index() {
+    const [customers, setCustomers] = useState<Customer[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
-    let data: Customer[];
-    try {
-        console.log('Fetching customers from wifiUsers table...');
-        const { data: customers, error, count } = await supabase
-            .from('wifiUsers')
-            .select('*', { count: 'exact' });
-
-        if (error) {
-            console.error('Error during fetch:', error);
-            throw error;
+    useEffect(() => {
+        async function loadCustomers() {
+            setIsLoading(true);
+            const result = await fetchCustomers();
+            if (result.error) {
+                console.error('Failed to fetch customers:', result.error);
+                setError('Failed to load customers');
+            } else {
+                setCustomers(result.data || []); 
+            }
+            setIsLoading(false);
         }
 
-        console.log(`Received ${count} customers.`);
-        data = customers;
-        console.log('Customers data:', data);
-    } catch (error) {
-        console.error('Error fetching customers:', error);
-        return <div>Error loading customer data!</div>;
+        loadCustomers();
+    }, []); 
+
+    if (isLoading) {
+        return <div>Loading...</div>;  // Loading indicator
+    }
+
+    if (error) {
+        return <div>Error: {error}</div>;  // Display error message if there is an error
     }
 
     return (
-        <>
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-
-        <div className="flex-1 w-full flex flex-col gap-20 items-center">
-            Customers
-            <DataTable columns={columns} data={data} />
+        <div className='flex flex-col gap-8'>
+            <PageHeader
+                title="Customers"
+                description="Explore a detailed listing of everyone who has connected to your WiFi network. Manage and analyze customer interactions to enhance service and engagement directly from this page."
+                primaryButton={{ label: "New Segment", onClick: () => console.log("Clicked!") }}
+                secondaryButton={{ label: "Learn More", onClick: () => console.log("Export Clicked!"), variant: 'secondary' }}
+            />
+            <div className="flex-1 w-full flex flex-col gap-20 items-center">
+                <DataTable columns={columns} data={customers} />
+            </div>
         </div>
-        </>
     );
 }
+
+export default Index;
