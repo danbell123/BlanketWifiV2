@@ -10,7 +10,7 @@ export const columns: ColumnDef<Customer>[] = [
     accessorKey: "profilePicture",
     header: "",
     cell: info => {
-      const imageUrl = info.getValue();
+      const imageUrl: string = info.getValue() as string;
       return (
         <Avatar>
           <AvatarImage src={imageUrl} />

@@ -19,7 +19,7 @@ const TimelineItem = React.forwardRef(({ activity }: { activity: Activity }, ref
   };
 
   return (
-    <div ref={ref} className="flex items-start mb-6">
+    <div className="flex items-start mb-6">
       <div className="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-card rounded-full mr-4 z-10">
         <span>{getIcon(activity.type)}</span>
       </div>
