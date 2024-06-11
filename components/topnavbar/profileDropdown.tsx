@@ -1,3 +1,5 @@
+'use client';
+
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -5,11 +7,25 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-  } from "@/components/ui/dropdown-menu"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { motion } from "framer-motion"
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { motion } from "framer-motion";
+import { createClient } from "@/utils/supabase/client"; // Ensure correct path to your Supabase client
 
 const ProfileDropdown = () => {
+    const supabase = createClient(); // Initialize Supabase client
+
+    const handleLogout = async () => {
+        const { error } = await supabase.auth.signOut();
+        if (error) {
+            console.error('Logout failed:', error.message);
+        } else {
+            console.log('Successfully logged out');
+            // Instead of using router.push, we use window.location to force a full page reload to the login page
+            window.location.href = '/login';
+        }
+    };
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger>
@@ -28,10 +44,7 @@ const ProfileDropdown = () => {
                 <DropdownMenuContent>
                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>Profile</DropdownMenuItem>
-                    <DropdownMenuItem>Billing</DropdownMenuItem>
-                    <DropdownMenuItem>Team</DropdownMenuItem>
-                    <DropdownMenuItem>Subscription</DropdownMenuItem>
+                    <DropdownMenuItem onClick={handleLogout}>Log Out</DropdownMenuItem>
                 </DropdownMenuContent>
             </motion.div>
         </DropdownMenu>
