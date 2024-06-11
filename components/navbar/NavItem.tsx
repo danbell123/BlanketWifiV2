@@ -45,7 +45,7 @@ const NavItem: React.FC<NavItemProps> = ({ item, selected, setSelected, isOpen }
     return (
         <Link href={item.href} legacyBehavior>
             <motion.button
-                className={`p-2 rounded-md transition-all flex items-center justify-start relative overflow-hidden ${isActive ? 'bg-secondary text-secondary-foreground' : 'bg-background text-foreground'}`}
+                className={`p-2 rounded-md transition-all flex items-center justify-start relative overflow-hidden ${isActive ? 'bg-primary text-secondary-foreground' : 'bg-card text-foreground'}`}
                 style={{
                     width: isOpen ? '100%' : '40px',
                     height: isOpen ? 'auto' : '40px',
