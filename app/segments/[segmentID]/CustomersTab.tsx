@@ -1,14 +1,16 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import "../globals.css";
 import { columns } from "@/components/columns/customer-columns";
 import { DataTable } from "@/components/DataTable";
 import { Customer } from "@/types/index";
-import { fetchCustomers } from "@/services/userService";
-import { PageHeader } from "@/components/PageHeader";
+import { fetchWifiUsersBySegmentId } from "@/services/segmentsService";
 
-function Index() {
+interface CustomersTabProps {
+  SegmentId: string;
+}
+
+function CustomersTab({ SegmentId }: CustomersTabProps) {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -16,7 +18,7 @@ function Index() {
   useEffect(() => {
     async function loadCustomers() {
       setIsLoading(true);
-      const result = await fetchCustomers();
+      const result = await fetchWifiUsersBySegmentId(SegmentId);
       if (result.error) {
         console.error("Failed to fetch customers:", result.error);
         setError("Failed to load customers");
@@ -39,19 +41,6 @@ function Index() {
 
   return (
     <div className="flex flex-col gap-8">
-      <PageHeader
-        title="Customers"
-        description="Explore a detailed listing of everyone who has connected to your WiFi network. Manage and analyze customer interactions to enhance service and engagement directly from this page."
-        primaryButton={{
-          label: "New Segment",
-          onClick: () => console.log("Clicked!"),
-        }}
-        secondaryButton={{
-          label: "Learn More",
-          onClick: () => console.log("Export Clicked!"),
-          variant: "secondary",
-        }}
-      />
       <div className="flex-1 w-full flex flex-col gap-20 items-center">
         <DataTable columns={columns} data={customers} />
       </div>
@@ -59,4 +48,4 @@ function Index() {
   );
 }
 
-export default Index;
+export default CustomersTab;

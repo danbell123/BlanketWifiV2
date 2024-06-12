@@ -17,50 +17,54 @@ import { z } from "zod";
 
 interface BusinessDetailsFormProps {
   onSubmit: SubmitHandler<z.infer<typeof businessDetailsSchema>>;
-  onBack: () => void;  // Prop for handling back navigation
+  onBack: () => void; // Prop for handling back navigation
   initialData?: z.infer<typeof businessDetailsSchema>; // Prop for setting initial values
 }
 
-export default function BusinessDetailsForm({ onSubmit, onBack, initialData }: BusinessDetailsFormProps) {
+export default function BusinessDetailsForm({
+  onSubmit,
+  onBack,
+  initialData,
+}: BusinessDetailsFormProps) {
   const form = useForm<z.infer<typeof businessDetailsSchema>>({
     resolver: zodResolver(businessDetailsSchema),
     defaultValues: initialData || {},
-});
+  });
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <div className="flex flex-row gap-8">
-            <div className="w-1/2">
-                <FormField
-                    control={form.control}
-                    name="businessName"
-                    render={({ field }) => (
-                        <FormItem>
-                        <FormLabel>Business Name</FormLabel>
-                        <FormControl>
-                            <Input placeholder="Your business name" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                        </FormItem>
-                    )}
-                />
-            </div>
-            <div className="w-1/2">
+          <div className="w-1/2">
             <FormField
-            control={form.control}
-            name="industry"
-            render={({ field }) => (
+              control={form.control}
+              name="businessName"
+              render={({ field }) => (
                 <FormItem>
-                <FormLabel>Industry</FormLabel>
-                <FormControl>
-                    <Input placeholder="e.g., Retail" {...field} />
-                </FormControl>
-                <FormMessage />
+                  <FormLabel>Business Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Your business name" {...field} />
+                  </FormControl>
+                  <FormMessage />
                 </FormItem>
-            )}
+              )}
             />
-            </div>
+          </div>
+          <div className="w-1/2">
+            <FormField
+              control={form.control}
+              name="industry"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Industry</FormLabel>
+                  <FormControl>
+                    <Input placeholder="e.g., Retail" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
         </div>
         <FormField
           control={form.control}
@@ -102,36 +106,36 @@ export default function BusinessDetailsForm({ onSubmit, onBack, initialData }: B
           )}
         />
         <div className="flex flex-row gap-8">
-            <div className="w-1/2">
+          <div className="w-1/2">
             <FormField
-            control={form.control}
-            name="city"
-            render={({ field }) => (
+              control={form.control}
+              name="city"
+              render={({ field }) => (
                 <FormItem>
-                <FormLabel>City</FormLabel>
-                <FormControl>
+                  <FormLabel>City</FormLabel>
+                  <FormControl>
                     <Input placeholder="City" {...field} />
-                </FormControl>
-                <FormMessage />
+                  </FormControl>
+                  <FormMessage />
                 </FormItem>
-            )}
+              )}
             />
-            </div>
-            <div className="w-1/2">
+          </div>
+          <div className="w-1/2">
             <FormField
-            control={form.control}
-            name="postcode"
-            render={({ field }) => (
+              control={form.control}
+              name="postcode"
+              render={({ field }) => (
                 <FormItem>
-                <FormLabel>Postcode</FormLabel>
-                <FormControl>
+                  <FormLabel>Postcode</FormLabel>
+                  <FormControl>
                     <Input placeholder="Postcode" {...field} />
-                </FormControl>
-                <FormMessage />
+                  </FormControl>
+                  <FormMessage />
                 </FormItem>
-            )}
+              )}
             />
-            </div>
+          </div>
         </div>
         <FormField
           control={form.control}
@@ -151,7 +155,7 @@ export default function BusinessDetailsForm({ onSubmit, onBack, initialData }: B
             Back
           </Button>
           <Button type="submit" disabled={form.formState.isSubmitting}>
-            {form.formState.isSubmitting ? 'Submitting...' : 'Next'}
+            {form.formState.isSubmitting ? "Submitting..." : "Next"}
           </Button>
         </div>
       </form>

@@ -10,14 +10,15 @@ export async function GET(request: Request) {
     const supabase = createClient();
 
     // Exchange the code for a session
-    const { data: authData, error: authError } = await supabase.auth.exchangeCodeForSession(code);
+    const { data: authData, error: authError } =
+      await supabase.auth.exchangeCodeForSession(code);
 
     if (authData && authData.session && authData.session.user) {
       // Fetch the tenantID from the database
       const { data: user, error: userError } = await supabase
-        .from('users')
-        .select('tenant_id')
-        .eq('id', authData.session.user.id)
+        .from("users")
+        .select("tenant_id")
+        .eq("id", authData.session.user.id)
         .single();
 
       if (user && user.tenant_id) {
@@ -26,15 +27,15 @@ export async function GET(request: Request) {
 
         // Create a response and set the cookie
         const response = NextResponse.redirect(`${origin}/protected`);
-        response.headers.append('Set-Cookie', cookie);
+        response.headers.append("Set-Cookie", cookie);
 
         return response;
       } else if (userError) {
-        console.error('Failed to fetch tenantID:', userError);
+        console.error("Failed to fetch tenantID:", userError);
         // Handle user error specifics here
       }
     } else if (authError) {
-      console.error('Auth exchange error:', authError);
+      console.error("Auth exchange error:", authError);
       // Handle auth error specifics here
     }
   }

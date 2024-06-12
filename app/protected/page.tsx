@@ -9,8 +9,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-import ThemeToggle from '../../components/ThemeToggle'; // Adjust the path as necessary
+} from "@/components/ui/table";
+import ThemeToggle from "../../components/ThemeToggle"; // Adjust the path as necessary
 
 export default async function ProtectedPage() {
   const supabase = createClient();
@@ -37,7 +37,9 @@ export default async function ProtectedPage() {
                 <h3 className="font-semibold text-card-foreground">Card</h3>
               </div>
               <div className="bg-popover p-4 shadow rounded-lg">
-                <h3 className="font-semibold text-popover-foreground">Popover</h3>
+                <h3 className="font-semibold text-popover-foreground">
+                  Popover
+                </h3>
               </div>
               <div className="bg-primary p-4 shadow rounded-lg text-primary-foreground">
                 Primary

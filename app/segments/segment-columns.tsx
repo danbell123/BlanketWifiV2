@@ -1,19 +1,23 @@
 // segment-columns.tsx
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { Segment } from "@/types/segment";
-import CustomDropdownMenu from '@/components/actionDropdowns/dropdownMenu';
-import { Badge } from '@/components/ui/badge';
-import AvatarList from '@/components/AvatarList';
+import CustomDropdownMenu from "@/components/actionDropdowns/dropdownMenu";
+import { Badge } from "@/components/ui/badge";
+import AvatarList from "@/components/AvatarList";
 
 export const columns: ColumnDef<Segment>[] = [
   {
-    id: 'nameAndDescription',
-    header: 'Segment Info',
+    id: "nameAndDescription",
+    header: "Segment Info",
     cell: ({ row }) => (
       <div className="flex flex-col space-y-1">
-        <span className="text-foreground text-lg font-semibold">{row.original.name}</span>
-        <span className="text-sm text-card-foreground">{row.original.description || "No description"}</span>
+        <span className="text-foreground text-lg font-semibold">
+          {row.original.name}
+        </span>
+        <span className="text-sm text-card-foreground">
+          {row.original.description || "No description"}
+        </span>
       </div>
     ),
   },
@@ -31,9 +35,9 @@ export const columns: ColumnDef<Segment>[] = [
     id: "customerIDs",
     header: "Customer IDs",
     cell: ({ row }) => {
-        return (
+      return (
         <div>
-          <AvatarList segmentId={row.original.segment_id}/>
+          <AvatarList segmentId={row.original.segment_id} />
         </div>
       );
     },
@@ -44,12 +48,11 @@ export const columns: ColumnDef<Segment>[] = [
     cell: ({ row }) => {
       const segmentId = row.original.segment_id;
       const menuItems = [
-        { label: 'View segment', path: `/segments/${segmentId}` },
-        { label: 'Edit segment', path: `/segments/edit/${segmentId}` },
-        { label: 'Delete segment', path: `/segments/delete/${segmentId}` },
+        { label: "View segment", path: `/segments/${segmentId}` },
+        { label: "Edit segment", path: `/segments/edit/${segmentId}` },
+        { label: "Delete segment", path: `/segments/delete/${segmentId}` },
       ];
       return <CustomDropdownMenu menuItems={menuItems} />;
     },
   },
 ];
-
