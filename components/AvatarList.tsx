@@ -4,6 +4,7 @@ import { fetchWifiUserIdsBySegmentId } from "@/services/segmentsService";
 import { fetchCustomerById } from "@/services/userService"; // Correct import paths
 import { Customer } from "@/types/index"; // Correct import paths
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Skeleton } from "@/components/ui/skeleton"
 interface AvatarListProps {
   segmentId: string;
   maxVisible?: number;
@@ -12,7 +13,7 @@ interface AvatarListProps {
 // Define the type for state to handle an array of Customers or null values
 const AvatarList: React.FC<AvatarListProps> = ({
   segmentId,
-  maxVisible = 2,
+  maxVisible = 3,
 }) => {
   // Set the state type to (Customer | null)[] to handle possible null values
   const [customers, setCustomers] = useState<(Customer | null)[]>([]);
@@ -46,8 +47,25 @@ const AvatarList: React.FC<AvatarListProps> = ({
 
   return (
     <div className="flex items-center">
-      {loading ? (
-        <p>Loading...</p>
+      {/* TODO: Fix skeleton animation not working */}
+      {!loading ? (
+        <div className="flex flex-row">
+          <Avatar className="">
+            <AvatarFallback>
+              <Skeleton className="w-full h-full rounded-full" />
+            </AvatarFallback>
+          </Avatar>
+          <Avatar className="-ml-2">
+            <AvatarFallback>
+              <Skeleton className="w-full h-full rounded-full" />
+            </AvatarFallback>
+          </Avatar>
+          <Avatar className="-ml-3">
+            <AvatarFallback >
+              <Skeleton className="w-full h-full rounded-full" />
+            </AvatarFallback>
+          </Avatar>
+        </div>
       ) : (
         customers.map(
           (customer, index) =>
@@ -56,8 +74,7 @@ const AvatarList: React.FC<AvatarListProps> = ({
                 <Avatar>
                   <AvatarImage
                     src={
-                      customer.profilePictureURL ||
-                      "https://github.com/shadcn.png"
+                      customer.profilePictureURL
                     }
                   />
                   <AvatarFallback>

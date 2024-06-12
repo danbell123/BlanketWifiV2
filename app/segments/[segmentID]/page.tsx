@@ -66,7 +66,7 @@ function SegmentOverview() {
       ];
     
       return (
-        <div className="flex flex-col gap-8 h-screen overflow-hidden">
+        <div className="flex flex-col gap-8">
           <PageHeader
             title={segment.name}
             description={segment.description || undefined}
