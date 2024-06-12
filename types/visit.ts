@@ -1,6 +1,6 @@
 export type Visit = {
-    visitID: string;
-    tenant: string;
-    customerID: string;
-    timestamp: Date;
+  visitID: string;
+  tenant: string;
+  customerID: string;
+  timestamp: Date;
 };
