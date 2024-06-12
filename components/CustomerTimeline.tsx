@@ -57,9 +57,8 @@ const CustomerTimeline: React.FC<CustomerTimelineProps> = ({ customerId }) => { 
 
   return (
     <div className="relative">
-      <h2 className="text-2xl font-bold mb-6">Customer Timeline</h2>
       <div className="relative">
-        <div className="absolute left-4 top-8 bottom-0 w-0.5 bg-primary z-0"></div>
+        <div className="absolute left-4 top-16 bottom-0 w-0.5 bg-primary z-0"></div>
         {activities.map((activity, index) => (
           <TimelineItem key={activity.id} activity={activity} />
         ))}

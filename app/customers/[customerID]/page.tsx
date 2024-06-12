@@ -5,6 +5,7 @@ import { fetchCustomerById } from '@/services/userService'; // Ensure path is co
 import { Customer } from '@/types/index'; // Ensure path and types are correct
 import CustomerTimeline from '@/components/CustomerTimeline';
 import { PageHeader } from '@/components/PageHeader'; 
+import { Badge } from '@/components/ui/badge';
 
 function CustomerProfile() {
     const [customer, setCustomer] = useState<Customer | null>(null);
@@ -49,25 +50,75 @@ function CustomerProfile() {
     }
 
     return (
-        <div className='flex flex-col gap-8'>
+        <div className='flex flex-col gap-8 h-screen overflow-hidden'>
             <PageHeader
                 title={customer?.firstname + ' ' + customer?.lastname}
-                description="This page shows detailed information about the customer."
-                image={customer?.profilePictureURL} // Pass the image URL here
+                description={customer?.email}
+                profilePictureURL={customer?.profilePictureURL} // Pass the image URL here
                 backLink={{ url: '/customers', label: 'All Customers' }} // Custom label for the back link
-                primaryButton={{ label: "Edit Customer", onClick: () => console.log("Clicked!") }}
+                customerFirstName={customer?.firstname}
+                customerLastName={customer?.lastname}
+                primaryButton={{ label: "Send Pulse", onClick: () => console.log("Clicked!") }}
                 secondaryButton={{ label: "Add To Segment", onClick: () => console.log("Export Clicked!"), variant: 'secondary' }}
             />
-            <p><strong>ID:</strong> {customer?.wifi_user_id}</p>
-            <p><strong>First Name:</strong> {customer?.firstname}</p>
-            <p><strong>Last Name:</strong> {customer?.lastname}</p>
-            <p><strong>Email:</strong> {customer?.email}</p>
-            <p><strong>Telephone:</strong> {customer?.tel}</p>
-            <p><strong>Date of Birth:</strong> {customer?.dob instanceof Date ? customer.dob.toDateString() : customer.dob}</p>
-            <p><strong>Gender:</strong> {customer?.gender}</p>
-            <p><strong>Profile Picture URL:</strong> {customer?.profilePictureURL && <a href={customer.profilePictureURL} target="_blank" rel="noopener noreferrer">View Profile Picture</a>}</p>
-            <div>
-                {customerID && <CustomerTimeline customerId={customerID} />}
+
+            <div className='flex flex-row flex-1 gap-12 overflow-hidden'>
+                <div className='flex flex-col gap-4'>
+                    <div className='flex w-full flex-col gap-4 bg-card p-4 rounded-lg text-base border'>
+                        <div className='flex flex-col gap-4'>
+                            <div className='flex flex-col gap-4'>
+                                <div className="flex items-center">
+                                    <span className="material-icons mr-2">email</span>
+                                    <p>{customer?.email}</p>
+                                </div>
+                                <div className="flex items-center">
+                                    <span className="material-icons mr-2">phone</span>
+                                    <p>{customer?.tel}</p>
+                                </div>
+                                <div className="flex items-center">
+                                    <span className="material-icons mr-2">cake</span>
+                                    <p>{customer?.dob instanceof Date ? customer.dob.toDateString() : customer.dob}</p>
+                                </div>
+                                <div className="flex items-center">
+                                    <span className="material-icons mr-2">wc</span>
+                                    <p className='capitalize'>{customer?.gender}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className='flex w-full flex-col gap-4 bg-card p-4 rounded-lg border'>
+                        <div className='flex flex-col gap-4'>
+                            <h2 className='text-base font-semibold'>Segments</h2>
+                            <div className='flex flex-wrap gap-2'>
+                                <Badge variant='outline'>Lost Customers</Badge>
+                                <Badge variant='outline'>One time visits</Badge>
+                                <Badge variant='outline'>No visits March</Badge>
+                            </div>
+                        </div>
+                    </div>
+                    <div className='flex w-full flex-col gap-4 bg-card p-4 rounded-lg border'>
+                        <div className='flex flex-col gap-4'>
+                            <h2 className='text-base font-semibold'>Visits</h2>
+                            <div className='flex flex-col gap-2'>
+                                <div className='flex flex-row gap-4'>
+                                    <p className='text-base text-popover-foreground'>Last Visit:</p>
+                                    <p className='text-base text-foreground'>2 days ago</p>
+                                </div>
+                                <div className='flex flex-row gap-4'>
+                                    <p className='text-base text-popover-foreground'>Total Visits:</p>
+                                    <p className='text-base text-foreground'>12</p>
+                                </div>
+                                <div className='flex flex-row gap-4'>
+                                    <p className='text-base text-popover-foreground'>First Visit:</p>
+                                    <p className='text-base text-foreground'>14 March 2023</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className='flex w-full flex-col gap-4 overflow-auto mb-4'>
+                    {customerID && <CustomerTimeline customerId={customerID} />}
+                </div>
             </div>
         </div>
     );

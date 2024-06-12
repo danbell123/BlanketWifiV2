@@ -41,9 +41,9 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
                       
             {backLink && backLink.url && ( // Check if backLink.url is defined
                       <Link href={backLink.url} legacyBehavior>
-                          <a className="text-primary hover:underline flex items-center gap-2">
-                              <span className='material-icons'>arrow_back</span>
-                              {backLink.label || 'Back'} {/* Use custom label if provided */}
+                          <a className="text-primary flex items-center gap-1">
+                              <span className='pl-2 material-icons' style={{ fontSize: '1rem' }}>arrow_back_ios</span>
+                              <span className='hover:underline'>{backLink.label || 'Back'}</span> {/* Use custom label if provided */}
                           </a>
                       </Link>
                   )}
