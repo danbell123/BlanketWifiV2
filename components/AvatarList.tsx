@@ -48,21 +48,21 @@ const AvatarList: React.FC<AvatarListProps> = ({
   return (
     <div className="flex items-center">
       {/* TODO: Fix skeleton animation not working */}
-      {!loading ? (
+      {loading ? (
         <div className="flex flex-row">
           <Avatar className="">
             <AvatarFallback>
-              <Skeleton className="w-full h-full rounded-full" />
+              <Skeleton className="animate-pulse w-1 h-full rounded-full" />
             </AvatarFallback>
           </Avatar>
           <Avatar className="-ml-2">
             <AvatarFallback>
-              <Skeleton className="w-full h-full rounded-full" />
+              <Skeleton className="animate-pulse w-1 h-full rounded-full" />
             </AvatarFallback>
           </Avatar>
           <Avatar className="-ml-3">
             <AvatarFallback >
-              <Skeleton className="w-full h-full rounded-full" />
+              <Skeleton className="animate-pulse w-1 h-full rounded-full" />
             </AvatarFallback>
           </Avatar>
         </div>
