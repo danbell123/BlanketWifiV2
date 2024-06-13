@@ -4,7 +4,7 @@ import { fetchWifiUserIdsBySegmentId } from "@/services/segmentsService";
 import { fetchCustomerById } from "@/services/userService"; // Correct import paths
 import { Customer } from "@/types/index"; // Correct import paths
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { Skeleton } from "@/components/ui/skeleton"
+import { Skeleton } from "@/components/ui/skeleton";
 interface AvatarListProps {
   segmentId: string;
   maxVisible?: number;
@@ -61,7 +61,7 @@ const AvatarList: React.FC<AvatarListProps> = ({
             </AvatarFallback>
           </Avatar>
           <Avatar className="-ml-3">
-            <AvatarFallback >
+            <AvatarFallback>
               <Skeleton className="animate-pulse w-1 h-full rounded-full" />
             </AvatarFallback>
           </Avatar>
@@ -72,11 +72,7 @@ const AvatarList: React.FC<AvatarListProps> = ({
             customer && ( // Check for non-null customer before rendering
               <div className={index === 0 ? "" : "-m-2"}>
                 <Avatar>
-                  <AvatarImage
-                    src={
-                      customer.profilePictureURL
-                    }
-                  />
+                  <AvatarImage src={customer.profilePictureURL} />
                   <AvatarFallback>
                     {customer.firstname[0] + customer.lastname[0]}
                   </AvatarFallback>

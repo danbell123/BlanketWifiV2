@@ -90,6 +90,7 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
         )}
 
         <Toaster />
+        <div id="modal-root"></div>
       </body>
     </html>
   );

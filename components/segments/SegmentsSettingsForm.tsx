@@ -14,12 +14,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-  } from "@/components/ui/select"
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { updateSegment } from "@/services/segmentsService";
 import { toast } from "sonner";
@@ -48,7 +48,12 @@ function SegmentsSettingsForm({ segment }: SegmentsSettingsFormProps) {
     },
   });
 
-  const { formState: { isDirty: formIsDirty }, handleSubmit, control, reset } = form;
+  const {
+    formState: { isDirty: formIsDirty },
+    handleSubmit,
+    control,
+    reset,
+  } = form;
 
   useEffect(() => {
     setIsDirty(formIsDirty);
@@ -82,7 +87,9 @@ function SegmentsSettingsForm({ segment }: SegmentsSettingsFormProps) {
         <div className="flex flex-row gap-12">
           <div className="w-1/3">
             <h2 className="text-lg font-semibold">General Settings</h2>
-            <p className="text-sm text-card-foreground">Configure the basic details of your segment.</p>
+            <p className="text-sm text-card-foreground">
+              Configure the basic details of your segment.
+            </p>
           </div>
           <div className="bg-card p-4 w-2/3 rounded space-y-8">
             <FormField
@@ -108,7 +115,11 @@ function SegmentsSettingsForm({ segment }: SegmentsSettingsFormProps) {
                 <FormItem>
                   <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Input placeholder="Description" {...field} value={field.value || ""} />
+                    <Input
+                      placeholder="Description"
+                      {...field}
+                      value={field.value || ""}
+                    />
                   </FormControl>
                   <FormDescription>
                     This is the description of your segment.
@@ -130,7 +141,7 @@ function SegmentsSettingsForm({ segment }: SegmentsSettingsFormProps) {
                         value={field.value}
                         onChange={(e) => field.onChange(e.target.value)}
                         className="rounded-none h-full p-0 border-none"
-                        style={{ width: '2.5rem' }}
+                        style={{ width: "2.5rem" }}
                       />
                       <Input placeholder="Segment Colour" {...field} />
                     </div>
@@ -148,8 +159,14 @@ function SegmentsSettingsForm({ segment }: SegmentsSettingsFormProps) {
         <div className="flex flex-row gap-12">
           <div className="w-1/3">
             <h2 className="text-lg font-semibold">Customer Selection</h2>
-            <p className="text-sm text-card-foreground pb-4">Segments can be set to automatically add customers based upon their activity. Manual customer selection is also available.</p>
-            <p className="text-sm text-card-foreground">If a customer no longer meets the rule they will be removed from the segment.</p>
+            <p className="text-sm text-card-foreground pb-4">
+              Segments can be set to automatically add customers based upon
+              their activity. Manual customer selection is also available.
+            </p>
+            <p className="text-sm text-card-foreground">
+              If a customer no longer meets the rule they will be removed from
+              the segment.
+            </p>
           </div>
           <div className="bg-card p-4 w-2/3 rounded space-y-4">
             <FormField
@@ -157,36 +174,50 @@ function SegmentsSettingsForm({ segment }: SegmentsSettingsFormProps) {
               name="type"
               render={({ field }) => (
                 <FormItem>
-                    <FormLabel>Type</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                        <SelectTrigger>
-                            <SelectValue placeholder="Select a segment type" />
-                        </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                        <SelectItem value="manual">Manual</SelectItem>
-                        <SelectItem value="auto">Automated</SelectItem>
-                        </SelectContent>
-                    </Select>
-                    <FormDescription>
-                        This is the type of your segment.
-                    </FormDescription>
-                    <FormMessage />
+                  <FormLabel>Type</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a segment type" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="manual">Manual</SelectItem>
+                      <SelectItem value="auto">Automated</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormDescription>
+                    This is the type of your segment.
+                  </FormDescription>
+                  <FormMessage />
                 </FormItem>
               )}
             />
             {form.watch("type") === "manual" && (
-                <ManualCustomerSelectionBox segment_id={segment.segment_id}/>
-                
+              <ManualCustomerSelectionBox segment_id={segment.segment_id} />
+            )}
+            {form.watch("type") === "auto" && (
+              <div className="flex flex-col gap-4">
+                <p className="text-sm text-card-foreground">
+                  Automated customer selection is not yet available.
+                </p>
+              </div>
             )}
           </div>
         </div>
-        
+
         <div className="flex flex-row justify-end ">
-            <Button variant="outline" type="submit" disabled={!isDirty || isLoading} className="w-min">
+          <Button
+            variant="outline"
+            type="submit"
+            disabled={!isDirty || isLoading}
+            className="w-min"
+          >
             {isLoading ? "Saving..." : "Save Settings"}
-            </Button>
+          </Button>
         </div>
       </form>
     </Form>
