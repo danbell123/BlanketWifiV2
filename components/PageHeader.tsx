@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 type PageHeaderProps = {
   title?: string;
-  description?: string;
+  description?: string | React.ReactNode;
   profilePictureURL?: string;
   customerFirstName?: string;
   customerLastName?: string;
@@ -68,12 +68,12 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
             </Link>
           )}
 
-        <div className="flex flex-row gap-2 align-middle items-center">
+        <div className="flex flex-row gap-4 align-middle items-center">
           {/*Display for customer avatar if this is a customer page*/}
           {customerFirstName && customerLastName && (
-            <Avatar style={{ width: "60px", height: "60px" }}>
+            <Avatar style={{ width: "100px", height: "100px" }}>
               <AvatarImage src={profilePictureURL} />
-              <AvatarFallback>
+              <AvatarFallback className="text-3xl font-bold">
                 {customerFirstName[0] + customerLastName[0]}
               </AvatarFallback>
             </Avatar>
