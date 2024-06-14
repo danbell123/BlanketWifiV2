@@ -66,18 +66,18 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
               isExpanded={isExpanded}
               onToggle={() => setIsExpanded(!isExpanded)}
             />
-            <main
+            <div
               style={{
                 width: isExpanded ? "calc(100% - 250px)" : "calc(100% - 72px)",
               }}
-              className={`transition-width justify-end duration-300`}
+              className={`transition-width justify-end duration-300 px-12 py-6`}
             >
               <TopNav />
-              <div className="p-6">
+              <div className="">
                 {!isSetup && <SetupPopup />}
                 <>{children}</>
               </div>
-            </main>
+            </div>
           </div>
         ) : (
           <>

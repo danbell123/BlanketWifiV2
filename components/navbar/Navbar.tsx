@@ -31,12 +31,12 @@ const Navbar: React.FC<NavbarProps> = ({ isExpanded, onToggle }) => {
     <>
       <MobileNavbar />
       <AnimatePresence>
-        <motion.aside
-          key="sidebar"
-          animate={isExpanded ? "open" : "closed"} // Use isExpanded prop here
-          variants={sidebarVariants}
-          className="hidden lg:flex lg:flex-col lg:fixed lg:h-full lg:left-0 lg:z-10 lg:bg-card lg:shadow-lg lg:p-4"
-        >
+      <motion.aside
+        key="sidebar"
+        animate={isExpanded ? "open" : "closed"} // Use isExpanded prop here
+        variants={sidebarVariants}
+        className="hidden bg-gradient-to-tr from-primary/15 to-card lg:flex lg:flex-col lg:fixed lg:h-full lg:left-0 lg:z-10 lg:shadow-lg lg:p-4 z-10"
+      >
           <div className="flex flex-col justify-between h-full gap-4">
             {menuItems.map((item) => (
               <NavItem

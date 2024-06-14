@@ -48,7 +48,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
   secondaryButton,
 }) => {
   return (
-    <div className="flex flex-row justify-between items-end gap-8">
+    <div className="flex flex-row justify-between items-end gap-8 pt-8">
       <div className="flex flex-col items-start gap-4">
         {backLink &&
           backLink.url && ( // Check if backLink.url is defined
