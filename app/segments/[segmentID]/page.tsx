@@ -9,6 +9,7 @@ import { PageHeader } from "@/components/PageHeader";
 import PageTabs from "@/components/PageTabs";
 import CustomersTab from "./CustomersTab";
 import SettingsTab from "./SettingsTab";
+import LoaderSimple from "@/components/loading/fullPageLoading";
 
 function SegmentOverview() {
   const [isLoading, setIsLoading] = useState(true);
@@ -38,7 +39,7 @@ function SegmentOverview() {
   }, [segmentID]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <LoaderSimple />;;
   }
 
   if (error) {

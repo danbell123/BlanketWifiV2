@@ -5,6 +5,7 @@ import { columns } from "@/components/columns/customer-columns";
 import { DataTable } from "@/components/DataTable";
 import { Customer } from "@/types/index";
 import { fetchWifiUsersBySegmentId } from "@/services/segmentsService";
+import LoaderSimple from "@/components/loading/fullPageLoading";
 
 interface CustomersTabProps {
   SegmentId: string;
@@ -32,7 +33,7 @@ function CustomersTab({ SegmentId }: CustomersTabProps) {
   }, []);
 
   if (isLoading) {
-    return <div>Loading...</div>; // Loading indicator
+    return <LoaderSimple />;; // Loading indicator
   }
 
   if (error) {

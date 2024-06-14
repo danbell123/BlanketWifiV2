@@ -7,6 +7,7 @@ import CustomerTimeline from "@/components/CustomerTimeline";
 import { PageHeader } from "@/components/PageHeader";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import LoaderSimple from "@/components/loading/fullPageLoading";
 
 function CustomerProfile() {
   const [customer, setCustomer] = useState<Customer | null>(null);
@@ -56,7 +57,7 @@ function CustomerProfile() {
   }, [customerID]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <LoaderSimple />;
   }
 
   if (error) {

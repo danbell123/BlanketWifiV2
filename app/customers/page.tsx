@@ -7,6 +7,8 @@ import { DataTable } from "@/components/DataTable";
 import { Customer } from "@/types/index";
 import { fetchCustomers } from "@/services/userService";
 import { PageHeader } from "@/components/PageHeader";
+import loaderSimple from "@/components/loading/fullPageLoading";
+import LoaderSimple from "@/components/loading/fullPageLoading";
 
 function Index() {
   const [customers, setCustomers] = useState<Customer[]>([]);
@@ -30,7 +32,7 @@ function Index() {
   }, []);
 
   if (isLoading) {
-    return <div>Loading...</div>; // Loading indicator
+    return <LoaderSimple /> // Loading indicator
   }
 
   if (error) {

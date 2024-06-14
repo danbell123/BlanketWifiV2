@@ -7,6 +7,7 @@ import { fetchSegments } from "@/services/segmentsService";
 import { PageHeader } from "@/components/PageHeader";
 import { DataTable } from "@/components/DataTable";
 import { columns } from "./segment-columns";
+import LoaderSimple from "@/components/loading/fullPageLoading";
 
 function Index() {
   const [segments, setsegments] = useState<Segment[]>([]);
@@ -31,7 +32,7 @@ function Index() {
   }, []);
 
   if (isLoading) {
-    return <div>Loading...</div>; // Loading indicator
+    return <LoaderSimple />;; // Loading indicator
   }
 
   if (error) {
