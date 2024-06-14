@@ -66,12 +66,13 @@ export const columns: ColumnDef<CustomerFullData>[] = [
     enableSorting: true,
   },
   {
-    accessorFn: (row) => (row.visits?.last_visit ? row.visits.last_visit.toISOString() : ''),
+    accessorFn: (row) =>
+      row.visits?.last_visit ? row.visits.last_visit.toISOString() : "",
     id: "last_visit",
     header: "Last Visit",
     cell: (info) => {
       const value = info.getValue() as string;
-      return value ? new Date(value).toLocaleString() : 'N/A';
+      return value ? new Date(value).toLocaleString() : "N/A";
     },
     enableSorting: true,
   },

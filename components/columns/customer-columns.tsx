@@ -1,5 +1,3 @@
-"use client";
-
 import { ColumnDef } from "@tanstack/react-table";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import CustomDropdownMenu from "@/components/actionDropdowns/dropdownMenu"; // Adjust the import path based on where you save the component
@@ -25,24 +23,29 @@ export const columns: ColumnDef<Customer>[] = [
     header: "First Name",
     cell: (info) => info.getValue(),
     enableSorting: true,
+    enableColumnFilter: true,
   },
   {
     accessorKey: "lastname",
     header: "Last Name",
     cell: (info) => info.getValue(),
     enableSorting: true,
+    enableColumnFilter: true,
   },
   {
     accessorKey: "email",
     header: "Email",
     cell: (info) => info.getValue(),
     enableSorting: true,
+    enableColumnFilter: true,
   },
   {
     accessorKey: "tel",
     header: "Telephone",
     cell: (info) => info.getValue(),
     enableSorting: true,
+    enableColumnFilter: true,
+
   },
   {
     id: "actions",
