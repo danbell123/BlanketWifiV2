@@ -42,11 +42,31 @@ const ProfileDropdown = () => {
         className="absolute right-0"
       >
         <DropdownMenuContent>
-          <DropdownMenuItem onClick={handleLogout}><span className="material-icons pr-2" style={{fontSize: "18px"}}>settings</span>Settings</DropdownMenuItem>
-          <DropdownMenuItem onClick={handleLogout}><span className="material-icons pr-2" style={{fontSize: "18px"}}>person</span>Account</DropdownMenuItem>
-          <DropdownMenuItem onClick={handleLogout}><span className="material-icons pr-2" style={{fontSize: "18px"}}>data_usage</span>Usage</DropdownMenuItem>
+          <DropdownMenuItem onClick={handleLogout}>
+            <span className="material-icons pr-2" style={{ fontSize: "18px" }}>
+              settings
+            </span>
+            Settings
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={handleLogout}>
+            <span className="material-icons pr-2" style={{ fontSize: "18px" }}>
+              person
+            </span>
+            Account
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={handleLogout}>
+            <span className="material-icons pr-2" style={{ fontSize: "18px" }}>
+              data_usage
+            </span>
+            Usage
+          </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={handleLogout}><span className="material-icons pr-2" style={{fontSize: "18px"}}>logout</span>Log Out</DropdownMenuItem>
+          <DropdownMenuItem onClick={handleLogout}>
+            <span className="material-icons pr-2" style={{ fontSize: "18px" }}>
+              logout
+            </span>
+            Log Out
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </motion.div>
     </DropdownMenu>

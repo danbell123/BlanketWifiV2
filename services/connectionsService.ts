@@ -58,4 +58,3 @@ export async function fetchVisitCount(
     return { data: 0, error: error as Error }; // Returning 0 for data and the error
   }
 }
-

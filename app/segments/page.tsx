@@ -32,7 +32,7 @@ function Index() {
   }, []);
 
   if (isLoading) {
-    return <LoaderSimple />;; // Loading indicator
+    return <LoaderSimple />; // Loading indicator
   }
 
   if (error) {
@@ -49,7 +49,7 @@ function Index() {
           onClick: () => console.log("Clicked!"),
         }}
       />
-      <DataTable columns={columns} data={segments} />
+      <DataTable columns={columns} data={segments} searchableFields={["name"]} />
     </div>
   );
 }

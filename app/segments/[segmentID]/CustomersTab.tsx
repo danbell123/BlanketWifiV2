@@ -33,7 +33,7 @@ function CustomersTab({ SegmentId }: CustomersTabProps) {
   }, []);
 
   if (isLoading) {
-    return <LoaderSimple />;; // Loading indicator
+    return <LoaderSimple />; // Loading indicator
   }
 
   if (error) {

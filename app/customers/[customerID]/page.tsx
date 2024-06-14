@@ -1,7 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation"; // New hooks for Next.js 14
-import { fetchCustomerById, fetchCustomerFullDetails } from "@/services/userService"; // Ensure path is correct
+import {
+  fetchCustomerById,
+  fetchCustomerFullDetails,
+} from "@/services/userService"; // Ensure path is correct
 import { Customer, CustomerFullData } from "@/types/index"; // Ensure path and types are correct
 import CustomerTimeline from "@/components/CustomerTimeline";
 import { PageHeader } from "@/components/PageHeader";
@@ -11,7 +14,8 @@ import LoaderSimple from "@/components/loading/fullPageLoading";
 
 function CustomerProfile() {
   const [customer, setCustomer] = useState<Customer | null>(null);
-  const [customerFullData, setCustomerFullData] = useState<CustomerFullData | null>(null);
+  const [customerFullData, setCustomerFullData] =
+    useState<CustomerFullData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -43,7 +47,10 @@ function CustomerProfile() {
 
         const fullDataResult = await fetchCustomerFullDetails(result.data);
         if (fullDataResult.error) {
-          console.error("Failed to fetch customer full data:", fullDataResult.error);
+          console.error(
+            "Failed to fetch customer full data:",
+            fullDataResult.error,
+          );
           setError("Failed to load customer full data");
         } else {
           setCustomerFullData(fullDataResult.data);
@@ -75,12 +82,22 @@ function CustomerProfile() {
         description={
           <div className="flex flex-row gap-4 pt-1">
             <div className="flex flex-row gap-2">
-              <span className="material-icons text-card-foreground mt-1" style={{ fontSize: "20px" }}>email</span>
+              <span
+                className="material-icons text-card-foreground mt-1"
+                style={{ fontSize: "20px" }}
+              >
+                email
+              </span>
               <p className="text-base text-foreground">{customer.email}</p>
             </div>
             <div className="flex flex-row gap-2">
-            <span className="material-icons text-card-foreground mt-1" style={{ fontSize: "20px" }}>phone</span>
-            <p className="text-base text-foreground">{customer.tel}</p>
+              <span
+                className="material-icons text-card-foreground mt-1"
+                style={{ fontSize: "20px" }}
+              >
+                phone
+              </span>
+              <p className="text-base text-foreground">{customer.tel}</p>
             </div>
           </div>
         }
@@ -104,14 +121,21 @@ function CustomerProfile() {
           <div className="flex w-full flex-col gap-4 bg-card p-4 rounded-lg border">
             <div className="flex flex-col gap-4">
               <div className="flex flex-row justify-between align-middle">
-                <h2 className="text-base font-semibold align-middle">Segments</h2>
+                <h2 className="text-base font-semibold align-middle">
+                  Segments
+                </h2>
                 <Button
                   variant="secondary"
                   size="sm"
                   className="p-1 h-min"
                   onClick={() => console.log("Add to Segment clicked!")}
                 >
-                  <span className="material-icons text-card-foreground" style={{fontSize: "18px"}}>add</span>
+                  <span
+                    className="material-icons text-card-foreground"
+                    style={{ fontSize: "18px" }}
+                  >
+                    add
+                  </span>
                 </Button>
               </div>
               <div className="flex flex-wrap gap-2">
@@ -161,7 +185,12 @@ function CustomerProfile() {
           <div className="flex w-full flex-col gap-4 bg-card p-4 rounded-lg text-base border">
             <div className="flex flex-col gap-4">
               <div className="flex items-center">
-                <span className="material-icons mr-2 text-card-foreground" style={{ fontSize: "20px" }}>cake</span>
+                <span
+                  className="material-icons mr-2 text-card-foreground"
+                  style={{ fontSize: "20px" }}
+                >
+                  cake
+                </span>
                 <p className="text-sm text-popover-foreground">
                   {customer.dob instanceof Date
                     ? customer.dob.toDateString()
@@ -169,7 +198,12 @@ function CustomerProfile() {
                 </p>
               </div>
               <div className="flex items-center text-popover-foreground">
-                <span className="material-icons mr-2 text-card-foreground" style={{ fontSize: "20px" }}>wc</span>
+                <span
+                  className="material-icons mr-2 text-card-foreground"
+                  style={{ fontSize: "20px" }}
+                >
+                  wc
+                </span>
                 <p className="text-sm  capitalize">{customer.gender}</p>
               </div>
             </div>

@@ -15,12 +15,12 @@ interface ManageSegmentCustomersPopupProps {
   segmentId: string; // Assuming you need the segment ID to manage customers
 }
 
-const ManageSegmentCustomersPopup: React.FC<ManageSegmentCustomersPopupProps> = ({
-  isOpen,
-  onClose,
-  segmentId,
-}) => {
-  const [customersFullData, setCustomersFullData] = useState<CustomerFullData[]>([]);
+const ManageSegmentCustomersPopup: React.FC<
+  ManageSegmentCustomersPopupProps
+> = ({ isOpen, onClose, segmentId }) => {
+  const [customersFullData, setCustomersFullData] = useState<
+    CustomerFullData[]
+  >([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -51,10 +51,14 @@ const ManageSegmentCustomersPopup: React.FC<ManageSegmentCustomersPopupProps> = 
       setError("Failed to load customers");
     } else {
       const customers = result.data || [];
-      const fullDataPromises = customers.map(customer => fetchCustomerFullDetails(customer));
+      const fullDataPromises = customers.map((customer) =>
+        fetchCustomerFullDetails(customer),
+      );
       const fullDataResults = await Promise.all(fullDataPromises);
 
-      const fullData = fullDataResults.map(res => res.data).filter(data => data !== null) as CustomerFullData[];
+      const fullData = fullDataResults
+        .map((res) => res.data)
+        .filter((data) => data !== null) as CustomerFullData[];
       setCustomersFullData(fullData);
     }
     setIsLoading(false);

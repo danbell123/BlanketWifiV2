@@ -32,7 +32,7 @@ function Index() {
   }, []);
 
   if (isLoading) {
-    return <LoaderSimple /> // Loading indicator
+    return <LoaderSimple />; // Loading indicator
   }
 
   if (error) {
@@ -55,7 +55,7 @@ function Index() {
         }}
       />
       <div className="flex-1 w-full flex flex-col gap-20 items-center">
-        <DataTable columns={columns} data={customers} />
+        <DataTable columns={columns} data={customers} searchableFields={["firstname", "lastname"]}/>
       </div>
     </div>
   );

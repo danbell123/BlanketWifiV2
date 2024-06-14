@@ -1,5 +1,10 @@
 import { createClient } from "../utils/supabase/client";
-import { Customer, Segment, CustomerVisits, CustomerFullData } from "@/types/index";
+import {
+  Customer,
+  Segment,
+  CustomerVisits,
+  CustomerFullData,
+} from "@/types/index";
 
 interface FetchResult<T> {
   data: T | null;
@@ -49,20 +54,25 @@ export async function fetchCustomerById(
 }
 
 // Function to fetch segments by customer ID from the 'segmentMembers' table
-async function fetchSegmentsByCustomerId(customerId: string): Promise<FetchResult<Segment[]>> {
+async function fetchSegmentsByCustomerId(
+  customerId: string,
+): Promise<FetchResult<Segment[]>> {
   const supabase = createClient();
-  
+
   try {
     const { data: segments, error } = await supabase
       .from("segmentMembers")
       .select("segments(*)")
       .eq("wifi_user_id", customerId);
-    
+
     if (error) throw error;
-    
+
     return { data: segments.map((s: any) => s.segments), error: null }; // Assuming the data is nested
   } catch (error) {
-    console.error(`Error fetching segments for customer ID ${customerId}:`, error);
+    console.error(
+      `Error fetching segments for customer ID ${customerId}:`,
+      error,
+    );
     return { data: null, error: error as Error };
   }
 }
@@ -80,7 +90,9 @@ function getDefaultCustomerVisits(customerId: string): CustomerVisits {
 }
 
 // Function to fetch visits by customer ID from the 'connections' table
-export async function fetchVisitsByCustomerId(customerId: string): Promise<FetchResult<CustomerVisits>> {
+export async function fetchVisitsByCustomerId(
+  customerId: string,
+): Promise<FetchResult<CustomerVisits>> {
   const supabase = createClient();
 
   try {
@@ -102,10 +114,16 @@ export async function fetchVisitsByCustomerId(customerId: string): Promise<Fetch
     const last7Days = new Date(now);
     last7Days.setDate(now.getDate() - 7);
 
-    const last30DaysVisits = visits.filter(visit => new Date(visit.timestamp) > last30Days).length;
-    const last7DaysVisits = visits.filter(visit => new Date(visit.timestamp) > last7Days).length;
+    const last30DaysVisits = visits.filter(
+      (visit) => new Date(visit.timestamp) > last30Days,
+    ).length;
+    const last7DaysVisits = visits.filter(
+      (visit) => new Date(visit.timestamp) > last7Days,
+    ).length;
 
-    const timestamps = visits.map(visit => new Date(visit.timestamp).getTime());
+    const timestamps = visits.map((visit) =>
+      new Date(visit.timestamp).getTime(),
+    );
     const lastVisit = new Date(Math.max(...timestamps));
     const firstVisit = new Date(Math.min(...timestamps));
 
@@ -121,8 +139,14 @@ export async function fetchVisitsByCustomerId(customerId: string): Promise<Fetch
       error: null,
     };
   } catch (error) {
-    console.error(`Error fetching visits for customer ID ${customerId}:`, error);
-    return { data: getDefaultCustomerVisits(customerId), error: error as Error };
+    console.error(
+      `Error fetching visits for customer ID ${customerId}:`,
+      error,
+    );
+    return {
+      data: getDefaultCustomerVisits(customerId),
+      error: error as Error,
+    };
   }
 }
 
@@ -152,7 +176,10 @@ export async function fetchCustomerFullDetails(
 
     return { data: customerFullData, error: null };
   } catch (error) {
-    console.error(`Error fetching full details for customer ${customer.wifi_user_id}:`, error);
+    console.error(
+      `Error fetching full details for customer ${customer.wifi_user_id}:`,
+      error,
+    );
     return { data: null, error: error as Error };
   }
 }

@@ -39,7 +39,7 @@ function SegmentOverview() {
   }, [segmentID]);
 
   if (isLoading) {
-    return <LoaderSimple />;;
+    return <LoaderSimple />;
   }
 
   if (error) {
