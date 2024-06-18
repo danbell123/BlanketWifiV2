@@ -1,71 +1,106 @@
 import { createClient } from "../utils/supabase/client";
-
-interface Tenant {
-  tenant_id: string | null;
-  isSetup: boolean;
-}
+import { z } from "zod";
+import yourDetailsSchema from "@/types/setupForms/yourDetailsSchema";
+import businessDetailsSchema from "@/types/setupForms/businessDetailsSchema";
+import plansSchema from "@/types/setupForms/plansSchema";
+import networkSchema from "@/types/setupForms/networkSchema";
+import SetupFormData from "@/types/setupForms/setupFormData";
+import { Tenant } from "@/types/tenant";
+import { isSet } from "util/types";
 
 interface FetchResult<T> {
   data: T | null;
   error: Error | null;
 }
 
-export async function fetchTenantById(
-  tenantId: string,
-): Promise<FetchResult<Tenant>> {
-  if (!tenantId) {
-    return { data: null, error: new Error("No tenant ID provided") };
-  }
+interface TenantCheckResult {
+  exists: boolean;
+  isSetup: boolean | null; // isSetup will be null if the tenant doesn't exist
+}
 
+export async function checkTenantSetup(tenantId: string): Promise<TenantCheckResult> {
   const supabase = createClient();
 
-  // Attempt to fetch the tenant
-  const { data: existingTenant, error: fetchError } = await supabase
-    .from("tenants")
-    .select("*")
-    .eq("tenant_id", tenantId)
-    .single();
-
-  if (fetchError && fetchError.code !== "PGRST116") {
-    // Error code for no tenant found. If no tenants found we are adding a new tenant
-    return { data: null, error: fetchError };
+  if (!tenantId) {
+    throw new Error("Tenant ID must be provided");
   }
 
-  if (existingTenant) {
-    // Tenant exists, return the data
-    return { data: existingTenant, error: null };
+  // Query the tenant based on tenant_id
+  const { data, error } = await supabase
+    .from("tenants")
+    .select("is_setup")
+    .eq("tenant_id", tenantId)
+    .single(); // Using .single() as we expect at most one record for a given tenant_id
+
+  if (error) {
+    // Handle possible errors, such as no matching tenant being found
+    console.error("Error fetching tenant:", error.message);
+    return { exists: false, isSetup: null };
+  }
+
+  if (data) {
+    // If data is returned, check the is_setup field
+    return { exists: true, isSetup: data.is_setup };
   } else {
-    // Tenant does not exist, create a new one
-    try {
-      await addTenantProfile(tenantId);
-      // After adding, re-fetch to get the new tenant record
-      const { data: newTenant, error: refetchError } = await supabase
-        .from("tenants")
-        .select("*")
-        .eq("tenant_id", tenantId)
-        .single();
-
-      if (refetchError) {
-        return { data: null, error: refetchError };
-      }
-
-      return { data: newTenant, error: null };
-    } catch (error) {
-      return { data: null, error: error };
-    }
+    // If no data is returned, the tenant does not exist
+    return { exists: false, isSetup: null };
   }
 }
 
-export async function addTenantProfile(tenantId: string): Promise<void> {
-  console.log("Adding tenant profile for tenant ID:", tenantId);
-  const supabase = createClient();
-  const { error } = await supabase
+export async function addTenantProfile(formData: SetupFormData): Promise<void> {
+  const supabase = createClient(); // Ensure the client is initialized
+
+  // Fetch the authenticated user
+  const { data: userData, error: authError } = await supabase.auth.getUser();
+  if (authError || !userData.user) {
+    console.error("User not authenticated:", authError);
+    throw new Error("Authentication required");
+  }
+
+  // Extract the user ID as tenant_id from the authenticated user details
+  const tenantId = userData.user.id; // Assuming the user's ID corresponds to tenant_id
+  if (!tenantId) {
+    throw new Error("No tenant ID available");
+  }
+
+  const { details, businessDetails, planDetails, networkDetails } = formData;
+
+  // Serialize networkConfig to JSON string if it exists
+  const networkConfigJSON = networkDetails.networkConfig ? JSON.stringify(networkDetails.networkConfig) : null;
+
+  const dataToInsert = {
+    is_setup: true,
+    tenant_id: tenantId,
+    firstname: details.firstname,
+    secondname: details.secondname,
+    telephone: details.telephone,
+    gender: details.gender,
+    dob: details.dob,
+    howDidYouHearAboutUs: details.howDidYouHearAboutUs,
+    businessName: businessDetails.businessName,
+    avgCustomers: businessDetails.avgCustomers,
+    addressLine1: businessDetails.addressLine1,
+    addressLine2: businessDetails.addressLine2,
+    city: businessDetails.city,
+    postcode: businessDetails.postcode,
+    county: businessDetails.county,
+    industry: businessDetails.industry,
+    planLevel: planDetails.level,
+    networkDetails: networkDetails.setupName,
+    networkConfig: networkConfigJSON,
+  };
+
+  console.log("Data to insert:", dataToInsert);
+
+  // Use upsert to either create a new row or update the existing one
+  const { data, error } = await supabase
     .from("tenants")
-    .insert([{ tenant_id: tenantId, is_setup: false }])
-    .single(); // Insert the tenant as a single record
+    .upsert(dataToInsert, { onConflict: "tenant_id" }); // Specify the conflict column to be tenant_id
 
   if (error) {
-    console.error("Failed to add tenant profile:", error.message);
-    throw error; // Optionally re-throw the error or handle it as needed
+    console.error("Failed to add or update tenant profile:", error.message);
+    throw error;  // Re-throw the error for external handling
+  } else {
+    console.log("Tenant profile added or updated successfully");
   }
 }

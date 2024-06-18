@@ -55,7 +55,11 @@ function Index() {
         }}
       />
       <div className="flex-1 w-full flex flex-col gap-20 items-center">
-        <DataTable columns={columns} data={customers} searchableFields={["firstname", "lastname"]}/>
+        <DataTable
+          columns={columns}
+          data={customers}
+          searchableFields={["firstname", "lastname"]}
+        />
       </div>
     </div>
   );

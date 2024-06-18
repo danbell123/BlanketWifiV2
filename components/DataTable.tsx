@@ -60,10 +60,11 @@ export function DataTable<TData, TValue>({
 
   React.useEffect(() => {
     // Construct filters based on the searchTerm and searchableFields
-    const filters = searchableFields?.map((field) => ({
-      id: field,
-      value: searchTerm,
-    })) ?? [];
+    const filters =
+      searchableFields?.map((field) => ({
+        id: field,
+        value: searchTerm,
+      })) ?? [];
 
     setColumnFilters(filters);
   }, [searchTerm, searchableFields]);

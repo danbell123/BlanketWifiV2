@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { GeistSans } from "geist/font/sans";
 import TopNav from "@/components/topnavbar/TopNavBar";
 import { createClient } from "@/utils/supabase/client";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
-import { fetchTenantById } from "@/services/tenantsService";
+import { checkTenantSetup } from "@/services/tenantsService";
 import SetupPopup from "@/components/setup/SetupPopup";
 
 const Navbar = dynamic(() => import("../components/navbar/Navbar"), {
@@ -19,39 +19,40 @@ interface RootLayoutProps {
 }
 
 const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
-  const [isExpanded, setIsExpanded] = useState(false); // State to track Navbar expansion
+  const [isExpanded, setIsExpanded] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isSetup, setIsSetup] = useState(false); // State to track if the user has completed the setup process
+  const [isSetup, setIsSetup] = useState(true);
   const supabase = createClient();
 
-  const checkAuth = async () => {
-    const user = await supabase.auth.getUser();
-    if (!user.data.user?.id) {
-      console.log("User not authenticated");
-      setIsAuthenticated(false);
-    } else {
-      console.log("User authenticated");
-      setIsAuthenticated(true);
-    }
-  };
-
-  const checkSetup = async () => {
-    const user = await supabase.auth.getUser();
-    console.log("User: ", user);
-    fetchTenantById(user.data.user?.id).then((res) => {
-      console.log("Res: ", res);
-      if (res.data?.isSetup) {
-        setIsSetup(true);
-        console.log("User has completed setup");
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data, error } = await supabase.auth.getUser();
+      if (error || !data.user) {
+        console.log("User not authenticated");
+        setIsAuthenticated(false);
       } else {
-        setIsSetup(false);
-        console.log("User has not completed setup");
+        console.log("User authenticated");
+        setIsAuthenticated(true);
+        checkSetup(data.user.id);
       }
-    });
-  };
+    };
 
-  checkAuth();
-  checkSetup();
+    const checkSetup = async (tenantId: string) => {
+      try {
+        const { exists, isSetup } = await checkTenantSetup(tenantId);
+        if (exists && isSetup !== null) {
+          setIsSetup(isSetup);
+        } else {
+          setIsSetup(false);
+        }
+      } catch (error) {
+        console.error("Failed to check setup status:", error);
+        setIsSetup(false);
+      }
+    };
+
+    checkAuth();
+  }, []); // Ensure these are only run once on mount
 
   return (
     <html lang="en" className={GeistSans.className}>

@@ -9,12 +9,10 @@ import plansSchema from "@/types/setupForms/plansSchema";
 import { z } from "zod";
 import { Progress } from "@/components/ui/progress";
 import { motion, AnimatePresence } from "framer-motion";
-
-interface FormData {
-  details: z.infer<typeof yourDetailsSchema>;
-  businessDetails: z.infer<typeof businessDetailsSchema>;
-  planDetails: z.infer<typeof plansSchema>;
-}
+import NetworkForm from "./NetworkForm";
+import networkSchema from "@/types/setupForms/networkSchema";
+import { addTenantProfile } from "@/services/tenantsService";
+import SetupFormData from "@/types/setupForms/setupFormData";
 
 interface SetupIconsProps {
   currentStage: number;
@@ -74,10 +72,11 @@ function SetupIcons({ currentStage }: SetupIconsProps) {
 
 export default function SetupPopup() {
   const [stage, setStage] = useState(1);
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<SetupFormData>({
     details: null,
     businessDetails: null,
     planDetails: null,
+    networkDetails: null,
   });
 
   const handleYourDetailsSubmit = (data: z.infer<typeof yourDetailsSchema>) => {
@@ -94,8 +93,21 @@ export default function SetupPopup() {
 
   const handlePlansDetailsSubmit = (data: z.infer<typeof plansSchema>) => {
     setFormData((prev) => ({ ...prev, planDetails: data }));
-    setStage(4); // Completion stage
+    setStage(4);
   };
+
+  const handleNetworkDetailsSubmit = (data: z.infer<typeof networkSchema>) => {
+    console.log("Network Form Data: ", data);
+    setFormData(prev => {
+        const updatedData = { ...prev, networkDetails: data };
+
+        console.log("Full Form Data after update: ", updatedData);
+        addTenantProfile(updatedData);
+        return updatedData;
+    });
+    setStage(5); // Move to the completion stage
+};
+
 
   const goBack = () => {
     setStage((prev) => Math.max(1, prev - 1)); // Go back to the previous form
@@ -137,7 +149,22 @@ export default function SetupPopup() {
                 initialData={formData.planDetails}
               />
             )}
-            {stage === 4 && <div>Setup Complete!</div>}
+            {stage === 4 && (
+              <NetworkForm
+                onSubmit={handleNetworkDetailsSubmit}
+                onBack={goBack}
+                initialData={formData.networkDetails}
+              />
+            )}
+            {stage === 5 && (
+              <div className="flex flex-col gap-4">
+                <h2 className="text-xl font-semibold">All Set Up!</h2>
+                <p className="text-sm text-card-foreground">
+                  We will be in touch soon.
+                </p>
+                <p>{JSON.stringify(formData)}</p>
+              </div>
+            )}
           </div>
         </DialogHeader>
       </DialogContent>

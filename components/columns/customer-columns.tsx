@@ -45,7 +45,6 @@ export const columns: ColumnDef<Customer>[] = [
     cell: (info) => info.getValue(),
     enableSorting: true,
     enableColumnFilter: true,
-
   },
   {
     id: "actions",

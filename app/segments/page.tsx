@@ -49,7 +49,11 @@ function Index() {
           onClick: () => console.log("Clicked!"),
         }}
       />
-      <DataTable columns={columns} data={segments} searchableFields={["name"]} />
+      <DataTable
+        columns={columns}
+        data={segments}
+        searchableFields={["name"]}
+      />
     </div>
   );
 }

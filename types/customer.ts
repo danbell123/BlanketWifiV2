@@ -30,4 +30,3 @@ export type CustomerFullData = {
   segments: Segment[];
   visits: CustomerVisits | null;
 };
-
