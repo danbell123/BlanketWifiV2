@@ -51,7 +51,7 @@ const Navbar: React.FC<NavbarProps> = ({ isExpanded, onToggle }) => {
               <BottomNavItem
                 item={{
                   name: "Settings",
-                  href: "#settings",
+                  href: "/settings",
                   icon: "settings",
                   id: 5,
                 }}

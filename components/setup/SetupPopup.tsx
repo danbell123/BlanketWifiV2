@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useEffect} from "react";
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
 import YourDetailsForm from "./YourDetailsForm";
 import BusinessDetailsForm from "./BusinessDetailsForm";
@@ -13,6 +13,8 @@ import NetworkForm from "./NetworkForm";
 import networkSchema from "@/types/setupForms/networkSchema";
 import { addTenantProfile } from "@/services/tenantsService";
 import SetupFormData from "@/types/setupForms/setupFormData";
+import { Button } from "@/components/ui/button";
+import { set } from "date-fns";
 
 interface SetupIconsProps {
   currentStage: number;
@@ -68,10 +70,16 @@ function SetupIcons({ currentStage }: SetupIconsProps) {
       })}
     </div>
   );
+};
+
+interface SetupPopupProps {
+  isActive: boolean;
+  isSetup: boolean;
 }
 
-export default function SetupPopup() {
-  const [stage, setStage] = useState(1);
+export default function SetupPopup({ isActive, isSetup }: SetupPopupProps): JSX.Element {
+  const initialStage = isSetup ? 5 : 1;
+  const [stage, setStage] = useState(initialStage);
   const [formData, setFormData] = useState<SetupFormData>({
     details: null,
     businessDetails: null,
@@ -106,8 +114,7 @@ export default function SetupPopup() {
         return updatedData;
     });
     setStage(5); // Move to the completion stage
-};
-
+  };
 
   const goBack = () => {
     setStage((prev) => Math.max(1, prev - 1)); // Go back to the previous form
@@ -115,11 +122,21 @@ export default function SetupPopup() {
 
   const progress = 12.5 + (stage - 1) * 25; // Assuming 4 stages for full process
 
+  useEffect(() => {
+    if (!isSetup) {
+      setStage(1);
+    } else {
+      setStage(5);
+    }
+    console.log("USER CONFIG: isActive: ", isActive, "Stage: ", stage, "isSetup:", isSetup);
+  }, [isActive]);
+
   return (
     <Dialog defaultOpen={true}>
-      <DialogContent className="max-w-screen-lg">
+      <DialogContent className="max-w-screen-md">
         <DialogHeader>
           <div className="flex flex-col gap-8">
+            {stage !== 5 && (
             <div className="flex flex-col gap-4">
               <p className="text-sm text-card-foreground">Email confirmed</p>
               <h2 className="text-xl font-semibold">Let's get you setup!</h2>
@@ -129,6 +146,7 @@ export default function SetupPopup() {
                 <SetupIcons currentStage={stage} />
               </div>
             </div>
+            )}
             {stage === 1 && (
               <YourDetailsForm
                 onSubmit={handleYourDetailsSubmit}
@@ -156,13 +174,22 @@ export default function SetupPopup() {
                 initialData={formData.networkDetails}
               />
             )}
-            {stage === 5 && (
-              <div className="flex flex-col gap-4">
-                <h2 className="text-xl font-semibold">All Set Up!</h2>
-                <p className="text-sm text-card-foreground">
-                  We will be in touch soon.
-                </p>
-                <p>{JSON.stringify(formData)}</p>
+            {stage === 5 &&(
+              <div className="flex flex-col gap-8">
+                <div className="flex flex-col gap-2">
+                  <div className="flex flex-row gap-1 items-center">
+                    <span className="material-icons text-primary">check_circle</span>
+                    <p className="text-2xl text-card-foreground font-semibold">
+                      Setup Complete!
+                    </p>
+                  </div>
+                  <p className="text-sm pr-24 font-semibold">Thank you for submitting your setup details.</p>
+                  <p className="text-sm pr-24 text-card-foreground">Everything is now in place, and one of our team members will be in touch with you shortly to finalise the process. We appreciate your patience and are excited to get you started!</p>
+                </div>
+                <div className="flex flex-row gap-4">
+                  <Button variant="default" className="w-min">FAQ's</Button>
+                  <Button variant="secondary" className="w-min">Contact Support</Button>
+                </div>
               </div>
             )}
           </div>

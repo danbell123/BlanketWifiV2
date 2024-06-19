@@ -3,7 +3,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import Image from 'next/image';
 
 export default function AppearanceSettings() {
-    const [theme, setTheme] = useState('light');
+    const [theme, setTheme] = useState(document.body.className);
 
     useEffect(() => {
         document.body.className = theme;

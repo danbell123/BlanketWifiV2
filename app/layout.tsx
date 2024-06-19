@@ -7,7 +7,7 @@ import TopNav from "@/components/topnavbar/TopNavBar";
 import { createClient } from "@/utils/supabase/client";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
-import { checkTenantSetup } from "@/services/tenantsService";
+import { checkTenantSetup, checkTenantActive, addTenantEmptyProfile } from "@/services/tenantsService";
 import SetupPopup from "@/components/setup/SetupPopup";
 
 const Navbar = dynamic(() => import("../components/navbar/Navbar"), {
@@ -22,6 +22,7 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isSetup, setIsSetup] = useState(true);
+  const [isActive, setIsActive] = useState(true);
   const supabase = createClient();
 
   useEffect(() => {
@@ -40,9 +41,14 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
     const checkSetup = async (tenantId: string) => {
       try {
         const { exists, isSetup } = await checkTenantSetup(tenantId);
+        console.log("Check Setup Status: ", exists, isSetup);
         if (exists && isSetup !== null) {
           setIsSetup(isSetup);
-        } else {
+          checkActive(tenantId);
+        } if (!exists) {
+          addTenantEmptyProfile(tenantId);
+        }
+        else {
           setIsSetup(false);
         }
       } catch (error) {
@@ -51,7 +57,22 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
       }
     };
 
-    checkAuth();
+    const checkActive = async (tenantId: string) => {
+      try {
+        const { res } = await checkTenantActive(tenantId);
+        if (res !== null) {
+          setIsActive(res);
+        } else {
+          setIsActive(false);
+        }
+      } catch (error) {
+        console.error("Failed to check active status:", error);
+        setIsActive(false);
+      }
+    };
+
+    checkAuth(); // CHECK AUTH --> CHECK SETUP --> CHECK ACTIVE
+    console.log("USER CONFIG: isAuthenticated: ", isAuthenticated, "isSetup: ", isSetup, "isActive: ", isActive);
   }, []); // Ensure these are only run once on mount
 
   return (
@@ -75,22 +96,20 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
             >
               <TopNav />
               <div className="">
-                {!isSetup && <SetupPopup />}
+                {!isActive && <SetupPopup isActive={isActive} isSetup={isSetup} />}
                 <>{children}</>
               </div>
             </div>
           </div>
         ) : (
-          <>
             <div
               className={`flex flex-col w-full h-full justify-center items-center`}
             >
               {children}
             </div>
-          </>
         )}
 
-        <Toaster />
+        <Toaster richColors/>
         <div id="modal-root"></div>
       </body>
     </html>

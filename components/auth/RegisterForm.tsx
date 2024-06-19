@@ -40,6 +40,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) => {
       password: data.password,
     });
 
+
     setLoading(false); // Stop loading after the request completes
 
     if (error) {

@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 import LoaderSimple from "@/components/loading/fullPageLoading";
 import SettingsNavItem from "@/components/navbar/SettingsNavItem";
 import AppearanceSettings from "@/components/settings/AppearanceSettings";
+import GeneralSettings from "@/components/settings/GeneralSettings";
+import BusinessSettings from "@/components/settings/BusinessSettings";
 
 function Index() {
   const [isLoading, setIsLoading] = useState(false);
@@ -45,6 +47,8 @@ function Index() {
     }
     ];
 
+
+
   return (
     <div className="flex flex-row h-full">
       <div className="flex w-1/4 h-full flex-col gap-20 border-r-2">
@@ -60,8 +64,12 @@ function Index() {
             ))}
         </div>
       </div>
-      <div className="flex w-3/4 h-full">
-        {selected === 1 && <div>General</div>}
+      <div className="flex w-full h-full p-8">
+        {selected === 1 && 
+            <div className="flex flex-col gap-8 w-full">
+                <GeneralSettings />
+                <BusinessSettings />
+            </div>}
         {selected === 2 && <div>Account & Security</div>}
         {selected === 3 && <AppearanceSettings />}
       </div>
