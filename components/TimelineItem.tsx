@@ -52,14 +52,14 @@ const TimelineItem = React.forwardRef<HTMLDivElement, { activity: Activity }>(
     };
 
     return (
-      <div className="flex items-center mb-6" ref={ref}>
+      <div className="flex items-center mb-6 " ref={ref}>
         <div
           className="flex-shrink-0 w-12 h-12 flex items-center justify-center rounded-full mr-4 z-10"
           style={{ backgroundColor: getBackgroundColor(activity.type) }}
         >
           {getIcon(activity.type)}
         </div>
-        <div className="flex flex-row bg-card p-4 rounded-lg shadow w-full">
+        <div className="flex flex-row bg-card p-4 rounded-lg shadow w-full bg-grid-white/[0.05]">
           <div className="w-full flex flex-col gap-2 justify-end">
             <p className="text-lg font-semibold">
               {formatActivityType(activity.type)}

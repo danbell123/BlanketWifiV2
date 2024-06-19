@@ -17,6 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { createClient } from "@/utils/supabase/client";
+import { BackgroundGradient } from "@/components/ui/background-gradient";
 
 interface RegisterFormProps {
   onSwitchToLogin: () => void;
@@ -54,10 +55,11 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) => {
   };
 
   return (
-    <div className="flex flex-col gap-8 h-full">
-      <div className="flex flex-col gap-4">
-        <h2 className="text-2xl font-bold">Register</h2>
-        <p className="text-sm">
+    <BackgroundGradient className="rounded p-1">
+    <div className="flex flex-col gap-8 h-min bg-card border p-10 rounded-2xl">
+      <div className="flex flex-col gap-2">
+        <h2 className="text-2xl font-bold text-foreground">Register</h2>
+        <p className="text-sm text-card-foreground">
           Already have an account?
           <span
             onClick={onSwitchToLogin}
@@ -68,8 +70,8 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) => {
         </p>
       </div>
       {isComplete ? (
-        <div className="flex flex-row bg-green-800 p-2 gap-2 rounded-xl">
-          <span className="material-icons text-3xl text-green-500">
+        <div className="flex flex-row bg-green-600 p-2 gap-2 rounded-xl">
+          <span className="material-icons text-3xl text-green-400">
             check_circle
           </span>
           <div className="flex flex-col gap-2">
@@ -136,6 +138,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) => {
         </Form>
       )}
     </div>
+    </BackgroundGradient>
   );
 };
 

@@ -16,7 +16,7 @@ export default function AppearanceSettings() {
     return (
         <RadioGroup className="flex flex-row p-8 w-full gap-4">
             <div
-                className={`flex flex-col w-full justify-between bg-white rounded shadow-lg cursor-pointer`}
+                className={`flex flex-col w-full justify-between bg-white/90 rounded shadow-lg cursor-pointer`}
                 onClick={() => handleThemeChange('light')}
             >
                 <div className="flex flex-row gap-2 p-4">
@@ -30,7 +30,7 @@ export default function AppearanceSettings() {
                 </div>
             </div>
             <div
-                className={`flex flex-col w-full justify-between bg-black rounded shadow-lg cursor-pointer`}
+                className={`flex flex-col w-full justify-between bg-[#1b1d29] rounded shadow-lg cursor-pointer`}
                 onClick={() => handleThemeChange('dark')}
             >
                 <div className="flex flex-row gap-2 p-4">

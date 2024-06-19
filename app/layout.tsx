@@ -9,6 +9,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { checkTenantSetup, checkTenantActive, addTenantEmptyProfile } from "@/services/tenantsService";
 import SetupPopup from "@/components/setup/SetupPopup";
+import { BackgroundBeams } from "@/components/ui/background-beams";
 
 const Navbar = dynamic(() => import("../components/navbar/Navbar"), {
   ssr: false,
@@ -73,6 +74,9 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
 
     checkAuth(); // CHECK AUTH --> CHECK SETUP --> CHECK ACTIVE
     console.log("USER CONFIG: isAuthenticated: ", isAuthenticated, "isSetup: ", isSetup, "isActive: ", isActive);
+
+    document.body.classList.add('dark');
+
   }, []); // Ensure these are only run once on mount
 
   return (
@@ -97,15 +101,16 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
               <TopNav />
               <div className="">
                 {!isActive && <SetupPopup isActive={isActive} isSetup={isSetup} />}
-                <>{children}</>
+                {children}
               </div>
             </div>
           </div>
         ) : (
-            <div
-              className={`flex flex-col w-full h-full justify-center items-center`}
-            >
-              {children}
+            <div className={`flex flex-col w-full h-screen justify-center items-center bg-card`}>
+              <div className="h-full w-full bg-background bg-grid-white/[0.1] relative flex items-center justify-center">
+              <div className="absolute pointer-events-none inset-0 flex items-center justify-center dark:bg-black bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
+                {children}
+              </div>
             </div>
         )}
 
