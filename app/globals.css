@@ -57,3 +57,7 @@
     @apply bg-background text-foreground;
   }
 }
+
+#radix-\:r5\: > button {
+  @apply hidden;
+}
